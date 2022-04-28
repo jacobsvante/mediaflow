@@ -16,12 +16,13 @@ pub(crate) fn default_location() -> Option<PathBuf> {
 pub(crate) fn to_env() -> Result<(), CliError> {
     let maybe_ini_path = &default_location().map(|p| p.into_os_string());
     let (ini_path, ini_section) = {
-        let app = Opts::command()
-            .ignore_errors(true)
-            .mut_arg("ini-path", |arg| match maybe_ini_path {
-                Some(p) => arg.default_value_os(p),
-                None => arg,
-            });
+        let app =
+            Opts::command()
+                .ignore_errors(true)
+                .mut_arg("ini-path", |arg| match maybe_ini_path {
+                    Some(p) => arg.default_value_os(p),
+                    None => arg,
+                });
         let matches = app.get_matches();
         let ini_section: String = match matches.value_of_t("ini-section") {
             Ok(s) => s,
@@ -49,7 +50,6 @@ pub(crate) fn to_env() -> Result<(), CliError> {
         debug!("INI {:?} doesn't exist. Nothing loaded.", &ini_path);
         None
     };
-
 
     for (k, v) in section.unwrap_or_default() {
         let k = k.to_ascii_uppercase();

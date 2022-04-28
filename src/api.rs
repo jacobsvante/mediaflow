@@ -1,10 +1,11 @@
+use async_recursion::async_recursion;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
-use async_recursion::async_recursion;
 
 use crate::{
     config::Config,
-    entities::{BearerToken, TokenResponse, FolderId}, MediaflowFolder, MediaflowFile,
+    entities::{BearerToken, FolderId, TokenResponse},
+    MediaflowFile, MediaflowFolder,
 };
 
 #[derive(Debug)]
@@ -64,20 +65,30 @@ impl RestApi {
         folder_id: u32,
     ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
-        let resp = self.get_raw(format!("folders/{folder_id}/children"), Some(query)).await?;
+        let resp = self
+            .get_raw(format!("folders/{folder_id}/children"), Some(query))
+            .await?;
         let folders: Vec<T> = serde_json::from_str(&resp)?;
         Ok(folders)
     }
 
-    pub async fn get_folder_files<T: MediaflowFile + DeserializeOwned>(&mut self, folder_id: u32) -> crate::Result<Vec<T>> {
+    pub async fn get_folder_files<T: MediaflowFile + DeserializeOwned>(
+        &mut self,
+        folder_id: u32,
+    ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
-        let resp = self.get_raw(format!("folders/{folder_id}/files"), Some(query)).await?;
+        let resp = self
+            .get_raw(format!("folders/{folder_id}/files"), Some(query))
+            .await?;
         let files: Vec<T> = serde_json::from_str(&resp)?;
         Ok(files)
     }
 
     #[async_recursion]
-    pub async fn get_folder_files_recursive<T: MediaflowFile + DeserializeOwned + Send>(&mut self, folder_id: u32) -> crate::Result<Vec<T>> {
+    pub async fn get_folder_files_recursive<T: MediaflowFile + DeserializeOwned + Send>(
+        &mut self,
+        folder_id: u32,
+    ) -> crate::Result<Vec<T>> {
         let mut files: Vec<T> = self.get_folder_files(folder_id).await?;
         let subfolders: Vec<FolderId> = self.get_folder_children(folder_id).await?;
         for subfolder in subfolders {

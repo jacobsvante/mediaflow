@@ -1,7 +1,6 @@
-use std::time::Instant;
 use mediaflow_derive::{MediaflowFile, MediaflowFolder};
 use serde::{Deserialize, Serialize};
-
+use std::time::Instant;
 
 #[derive(Debug, Clone)]
 pub(super) struct BearerToken {
@@ -12,9 +11,7 @@ pub(super) struct BearerToken {
 impl BearerToken {
     const TOKEN_MAX_AGE: u64 = 7200;
 
-    pub(super) fn new(
-        access_token: String,
-    ) -> Self {
+    pub(super) fn new(access_token: String) -> Self {
         Self {
             access_token,
             time_alive: Instant::now(),
@@ -35,7 +32,6 @@ impl From<TokenResponse> for BearerToken {
         Self::new(tr.access_token)
     }
 }
-
 
 #[derive(Debug, Clone, Deserialize)]
 enum TokenType {
@@ -90,7 +86,6 @@ pub struct ParentFolder {
     has_children: bool,
 }
 
-
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, MediaflowFile)]
 #[serde(rename_all = "camelCase")]
 pub struct FileBase {
@@ -99,7 +94,6 @@ pub struct FileBase {
     filename: String,
     filesize: u32,
 }
-
 
 #[derive(Default, Debug, Copy, Clone, PartialEq, Serialize, Deserialize, MediaflowFile)]
 #[serde(rename_all = "camelCase")]
@@ -181,7 +175,6 @@ pub struct Preview {
     size: String,
     url: String,
 }
-
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

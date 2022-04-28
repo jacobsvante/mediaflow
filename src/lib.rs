@@ -1,8 +1,8 @@
 pub mod api;
+pub mod config;
 pub mod entities;
 mod errors;
 mod utils;
-pub mod config;
 
 #[cfg(feature = "clap")]
 pub mod cli;

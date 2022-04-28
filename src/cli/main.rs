@@ -9,8 +9,11 @@ use log::{debug, LevelFilter};
 use super::opts::{Opts, RestApiSubCommand, SubCommand};
 use super::{error::CliError, opts::RawRestApiSubCommand};
 use super::{helpers::safe_extract_arg, ini};
-use crate::{api::RestApi, entities::{FolderFull, FileFull, FileBase}};
 use crate::config::Config;
+use crate::{
+    api::RestApi,
+    entities::{FileBase, FileFull, FolderFull},
+};
 
 pub async fn run() -> Result<(), CliError> {
     if let Some(level_filter) = safe_extract_arg::<LevelFilter>("level-filter") {
@@ -51,37 +54,41 @@ async fn rest_api_sub_command(
         RestApiSubCommand::Folders => {
             let folders = api.get_folders::<FolderFull>().await?;
             println!("{}", serde_json::to_string_pretty(&folders)?);
-        },
+        }
         RestApiSubCommand::FolderChildren { folder_id } => {
             let folders = api.get_folder_children::<FolderFull>(folder_id).await?;
             println!("{}", serde_json::to_string_pretty(&folders)?);
-        },
-        RestApiSubCommand::FolderFiles { folder_id, full, recursive } => {
+        }
+        RestApiSubCommand::FolderFiles {
+            folder_id,
+            full,
+            recursive,
+        } => {
             let output = if full {
                 let files = if recursive {
-                    api.get_folder_files_recursive::<FileFull>(folder_id).await?
+                    api.get_folder_files_recursive::<FileFull>(folder_id)
+                        .await?
                 } else {
                     api.get_folder_files::<FileFull>(folder_id).await?
                 };
                 serde_json::to_string_pretty(&files)?
             } else {
                 let files = if recursive {
-                    api.get_folder_files_recursive::<FileBase>(folder_id).await?
+                    api.get_folder_files_recursive::<FileBase>(folder_id)
+                        .await?
                 } else {
                     api.get_folder_files::<FileBase>(folder_id).await?
                 };
                 serde_json::to_string_pretty(&files)?
             };
             println!("{output}");
-        },
-        RestApiSubCommand::Raw { subcmd } => {
-            match subcmd {
-                RawRestApiSubCommand::Get { endpoint, query } => {
-                    let body = api.get_raw(endpoint, Some(query)).await?;
-                    println!("{body}");
-                }
-            }
         }
+        RestApiSubCommand::Raw { subcmd } => match subcmd {
+            RawRestApiSubCommand::Get { endpoint, query } => {
+                let body = api.get_raw(endpoint, Some(query)).await?;
+                println!("{body}");
+            }
+        },
     };
     Ok(())
 }

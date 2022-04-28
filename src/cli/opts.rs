@@ -49,7 +49,9 @@ pub(crate) enum SubCommand {
 #[derive(Debug, Parser)]
 pub(crate) enum RestApiSubCommand {
     Folders,
-    FolderChildren { folder_id: u32 },
+    FolderChildren {
+        folder_id: u32,
+    },
     FolderFiles {
         folder_id: u32,
         #[clap(short = 'F', long)]
@@ -77,6 +79,6 @@ pub(crate) enum RawRestApiSubCommand {
 fn two_tuple_on_equal_sign(s: &str) -> Result<(String, String), &'static str> {
     match s.split_once('=') {
         Some((key, val)) => Ok((key.into(), val.into())),
-        None => Err("Must be equal sign delimited")
+        None => Err("Must be equal sign delimited"),
     }
 }

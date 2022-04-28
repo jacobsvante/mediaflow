@@ -12,12 +12,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new<T: ToString>(
-        client_id: T,
-        client_secret: T,
-        username: T,
-        password: T,
-    ) -> Self {
+    pub fn new<T: ToString>(client_id: T, client_secret: T, username: T, password: T) -> Self {
         Self {
             base_url: Url::parse(DEFAULT_API_BASE_URL).unwrap(),
             client_id: client_id.to_string(),

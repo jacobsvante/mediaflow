@@ -9,10 +9,7 @@ pub enum EnvVar {
 
 impl EnvVar {
     fn exists(key: &str) -> bool {
-        matches!(
-            key,
-            "CLIENT_ID" | "CLIENT_SECRET" | "USERNAME" | "PASSWORD"
-        )
+        matches!(key, "CLIENT_ID" | "CLIENT_SECRET" | "USERNAME" | "PASSWORD")
     }
 
     pub(super) fn set<'a>(key: &'a str, val: &'a str) -> Result<&'a str, CliError> {
