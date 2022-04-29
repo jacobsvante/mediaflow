@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3.0.2
       -
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: stable
       -
@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3.0.2
       -
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: stable
       -
@@ -39,9 +39,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.2
       -
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1.0.6
         with:
           profile: minimal
           toolchain: stable
@@ -49,12 +49,12 @@ jobs:
       -
         uses: Swatinem/rust-cache@v1.3.0
       -
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1.0.1
         with:
           command: test
           args: --release
       -
-        uses: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1.0.1
         with:
           command: test
           args: --release --all-features
@@ -62,8 +62,8 @@ jobs:
   cargo-deny:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: EmbarkStudios/cargo-deny-action@v1
+    - uses: actions/checkout@v3.0.2
+    - uses: EmbarkStudios/cargo-deny-action@v1.2.15
 
   create-release-pr:
     name: Conditionally create release PR
@@ -76,7 +76,7 @@ jobs:
     steps:
       -
         name: Create a release Pull Request
-        uses: google-github-actions/release-please-action@v3
+        uses: google-github-actions/release-please-action@v3.2.1
         with:
           release-type: rust
           command: release-pr
@@ -88,13 +88,13 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       -
-        uses: google-github-actions/release-please-action@v3
+        uses: google-github-actions/release-please-action@v3.2.1
         id: release
         with:
           release-type: rust
           command: github-release
       -
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.2
         if: ${{ steps.release.outputs.release_created }}
       -
         name: Tag major and minor versions in Git
@@ -113,7 +113,7 @@ jobs:
       -
         name: Make cargo command available
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions-rs/toolchain@v1
+        uses: actions-rs/toolchain@v1.0.6
         with:
           toolchain: stable
           override: true
