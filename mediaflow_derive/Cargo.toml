@@ -3,6 +3,10 @@ name = "mediaflow_derive"
 version = "0.1.0"
 license = "MIT"
 edition = "2021"
+description = "Macros for the unofficial SDK to interact with the Mediaflow Pro API"
+repository = "https://github.com/jacobsvante/mediaflow"
+documentation = "https://docs.rs/mediaflow/"
+homepage = "https://github.com/jacobsvante/mediaflow"
 
 [lib]
 proc-macro = true
