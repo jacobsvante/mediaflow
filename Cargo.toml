@@ -3,6 +3,11 @@ name = "mediaflow"
 version = "0.1.0"
 license = "MIT"
 edition = "2021"
+description = "Unofficial SDK to interact with the Mediaflow Pro API"
+repository = "https://github.com/jacobsvante/mediaflow"
+documentation = "https://docs.rs/mediaflow/"
+homepage = "https://github.com/jacobsvante/mediaflow"
+
 
 [dependencies]
 clap = { version = "3.1", optional = true, features = ["derive", "env"] }
