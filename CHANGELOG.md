@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/jacobsvante/mediaflow/compare/v0.1.1...v0.2.0) (2022-05-02)
+
+
+### Features
+
+* Expose RestApi and Config in crate root ([6328fbb](https://github.com/jacobsvante/mediaflow/commit/6328fbb4f423ec14ca4187a4863b7dcc46277fab))
+* Make fields public on folder and file entities ([15c3587](https://github.com/jacobsvante/mediaflow/commit/15c3587aa8ae09ba650b685d21c4618e3e79ecf1))
+
 ### [0.1.1](https://github.com/jacobsvante/mediaflow/compare/v0.1.0...v0.1.1) (2022-05-02)
 
 
