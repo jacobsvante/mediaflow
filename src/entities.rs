@@ -52,20 +52,20 @@ pub(super) struct TokenResponse {
 #[serde(rename_all = "camelCase")]
 pub struct FolderFull {
     pub id: u32,
-    name: String,
+    pub name: String,
     #[serde(rename = "type")]
-    type_: u32,
-    depth: u16,
-    parent: Option<u32>,
-    created: String,
-    created_by: u32,
-    // index_words: Vec<...>,
-    has_children: bool,
-    archived: bool,
-    view_layout: String,
-    separator: bool,
-    parents: Option<Vec<ParentFolder>>,
-    // custom_fields: ...,
+    pub type_: u32,
+    pub depth: u16,
+    pub parent: Option<u32>,
+    pub created: String,
+    pub created_by: u32,
+    // pub index_words: Vec<...>,
+    pub has_children: bool,
+    pub archived: bool,
+    pub view_layout: String,
+    pub separator: bool,
+    pub parents: Option<Vec<ParentFolder>>,
+    // pub custom_fields: ...,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, MediaflowFolder)]
@@ -78,21 +78,21 @@ pub struct FolderId {
 #[serde(rename_all = "camelCase")]
 pub struct ParentFolder {
     pub id: u32,
-    name: String,
+    pub name: String,
     #[serde(rename = "type")]
-    type_: u32,
-    depth: u16,
-    parent: Option<u32>,
-    has_children: bool,
+    pub type_: u32,
+    pub depth: u16,
+    pub parent: Option<u32>,
+    pub has_children: bool,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, MediaflowFile)]
 #[serde(rename_all = "camelCase")]
 pub struct FileBase {
     pub id: u32,
-    name: String,
-    filename: String,
-    filesize: u32,
+    pub name: String,
+    pub filename: String,
+    pub filesize: u32,
 }
 
 #[derive(Default, Debug, Copy, Clone, PartialEq, Serialize, Deserialize, MediaflowFile)]
@@ -105,50 +105,50 @@ pub struct FileId {
 #[serde(rename_all = "camelCase")]
 pub struct FileFull {
     pub id: u32,
-    name: String,
-    filename: String,
+    pub name: String,
+    pub filename: String,
     #[serde(rename = "type")]
-    type_: FileType,
-    filesize: u32,
-    checksum: String,
-    width: u16,
-    height: u16,
-    length: Option<u16>,
-    dpi: u16,
-    rating: u16,
-    nr_downloads: u32,
-    mark: u32,
-    uploaded_by: u32,
-    uploaded: String,
-    // photo_date: ...,
-    added_to_folder: String,
-    // media_id: ...,
-    // poster: ...,
-    photographer: String,
-    description: String,
-    // alttext: String,
-    instructions: String,
-    iccprofile: Option<u16>,
-    geodata: Option<Geodata>,
-    processed: bool,
-    has_preview: bool,
-    has_versions: bool,
-    has_history: bool,
-    locked: bool,
-    // focus: Focus,
-    // colorspace: String,
-    // bitdepth: u16,
-    // alpha: bool,
-    icon: Option<String>,
-    previews: Vec<Preview>,
-    small_preview: String,
-    medium_preview: String,
-    thumb_preview: String,
-    comment: String,
-    // usage_count: usize,
-    // gdpr_status: String,
-    // gdpr_type: String,
-    // workflow_states: ...,
+    pub type_: FileType,
+    pub filesize: u32,
+    pub checksum: String,
+    pub width: u16,
+    pub height: u16,
+    pub length: Option<u16>,
+    pub dpi: u16,
+    pub rating: u16,
+    pub nr_downloads: u32,
+    pub mark: u32,
+    pub uploaded_by: u32,
+    pub uploaded: String,
+    // pub photo_date: ...,
+    pub added_to_folder: String,
+    // pub media_id: ...,
+    // pub poster: ...,
+    pub photographer: String,
+    pub description: String,
+    // pub alttext: String,
+    pub instructions: String,
+    pub iccprofile: Option<u16>,
+    pub geodata: Option<Geodata>,
+    pub processed: bool,
+    pub has_preview: bool,
+    pub has_versions: bool,
+    pub has_history: bool,
+    pub locked: bool,
+    // pub focus: Focus,
+    // pub colorspace: String,
+    // pub bitdepth: u16,
+    // pub alpha: bool,
+    pub icon: Option<String>,
+    pub previews: Vec<Preview>,
+    pub small_preview: String,
+    pub medium_preview: String,
+    pub thumb_preview: String,
+    pub comment: String,
+    // pub usage_count: usize,
+    // pub gdpr_status: String,
+    // pub gdpr_type: String,
+    // pub workflow_states: ...,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -156,29 +156,29 @@ pub struct FileFull {
 pub struct FileType {
     pub id: u32,
     #[serde(rename = "type")]
-    type_: String,
-    description: String,
-    extension: String,
+    pub type_: String,
+    pub description: String,
+    pub extension: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Focus {
-    x: f32,
-    y: f32,
+    pub x: f32,
+    pub y: f32,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Preview {
-    name: String,
-    size: String,
-    url: String,
+    pub name: String,
+    pub size: String,
+    pub url: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Geodata {
-    longitude: f32,
-    latitude: f32,
+    pub longitude: f32,
+    pub latitude: f32,
 }
