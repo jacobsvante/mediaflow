@@ -24,33 +24,6 @@ impl RestApi {
         }
     }
 
-    pub(crate) async fn get_raw<T: ToString>(
-        &mut self,
-        endpoint: T,
-        query: Option<Vec<(String, String)>>,
-    ) -> crate::Result<String> {
-        let access_token = self.access_token().await?;
-        let url = self.config.base_url.join(&endpoint.to_string()).unwrap();
-        let resp = self
-            .client
-            .request(reqwest::Method::GET, url)
-            .header("Authorization", format!("Bearer {}", access_token))
-            .query(&query.unwrap_or_default())
-            .send()
-            .await?;
-        let status = resp.status().as_u16();
-        let body = resp.text().await?;
-        match serde_json::from_str::<crate::MediaFlowResponseError>(&body) {
-            Ok(resp_error) => Err(crate::Error::ApiError(status, resp_error.error())),
-            Err(_) => Ok(body),
-        }
-    }
-
-    fn get_fields_query<T: DeserializeOwned>() -> (String, String) {
-        let fields = crate::utils::serde_introspect::<T>();
-        ("fields".into(), fields.join(","))
-    }
-
     pub async fn get_folders<T: MediaflowFolder + DeserializeOwned>(
         &mut self,
     ) -> crate::Result<Vec<T>> {
@@ -95,6 +68,33 @@ impl RestApi {
             files.extend(self.get_folder_files_recursive(subfolder.id).await?);
         }
         Ok(files)
+    }
+
+    pub(crate) async fn get_raw<T: ToString>(
+        &mut self,
+        endpoint: T,
+        query: Option<Vec<(String, String)>>,
+    ) -> crate::Result<String> {
+        let access_token = self.access_token().await?;
+        let url = self.config.base_url.join(&endpoint.to_string()).unwrap();
+        let resp = self
+            .client
+            .request(reqwest::Method::GET, url)
+            .header("Authorization", format!("Bearer {}", access_token))
+            .query(&query.unwrap_or_default())
+            .send()
+            .await?;
+        let status = resp.status().as_u16();
+        let body = resp.text().await?;
+        match serde_json::from_str::<crate::MediaFlowResponseError>(&body) {
+            Ok(resp_error) => Err(crate::Error::ApiError(status, resp_error.error())),
+            Err(_) => Ok(body),
+        }
+    }
+
+    fn get_fields_query<T: DeserializeOwned>() -> (String, String) {
+        let fields = crate::utils::serde_introspect::<T>();
+        ("fields".into(), fields.join(","))
     }
 
     async fn access_token(&mut self) -> crate::Result<String> {
