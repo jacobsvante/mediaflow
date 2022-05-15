@@ -1,6 +1,9 @@
+use std::sync::Arc;
+
 use async_recursion::async_recursion;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
+use tokio::sync::Mutex;
 
 use crate::{
     config::Config,
@@ -8,11 +11,11 @@ use crate::{
     MediaflowFile, MediaflowFolder,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RestApi {
     config: Config,
     client: reqwest::Client,
-    token: Option<BearerToken>,
+    token: Arc<Mutex<Option<BearerToken>>>,
 }
 
 impl RestApi {
@@ -20,12 +23,12 @@ impl RestApi {
         Self {
             config,
             client: Client::new(),
-            token: None,
+            token: Arc::new(Mutex::new(None)),
         }
     }
 
     pub async fn get_folders<T: MediaflowFolder + DeserializeOwned>(
-        &mut self,
+        &self,
     ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
         let resp = self.get_raw("folders", Some(query)).await?;
@@ -34,7 +37,7 @@ impl RestApi {
     }
 
     pub async fn get_folder_children<T: MediaflowFolder + DeserializeOwned>(
-        &mut self,
+        &self,
         folder_id: u32,
     ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
@@ -46,7 +49,7 @@ impl RestApi {
     }
 
     pub async fn get_folder_files<T: MediaflowFile + DeserializeOwned>(
-        &mut self,
+        &self,
         folder_id: u32,
     ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
@@ -59,7 +62,7 @@ impl RestApi {
 
     #[async_recursion]
     pub async fn get_folder_files_recursive<T: MediaflowFile + DeserializeOwned + Send>(
-        &mut self,
+        &self,
         folder_id: u32,
     ) -> crate::Result<Vec<T>> {
         let mut files: Vec<T> = self.get_folder_files(folder_id).await?;
@@ -71,7 +74,7 @@ impl RestApi {
     }
 
     pub(crate) async fn get_raw<T: ToString>(
-        &mut self,
+        &self,
         endpoint: T,
         query: Option<Vec<(String, String)>>,
     ) -> crate::Result<String> {
@@ -97,17 +100,21 @@ impl RestApi {
         ("fields".into(), fields.join(","))
     }
 
-    async fn access_token(&mut self) -> crate::Result<String> {
-        if let Some(token) = self.token.take() {
+    async fn access_token(&self) -> crate::Result<String> {
+        let mut guard = self.token.lock().await;
+        let token = if let Some(token) = &*guard {
             if token.close_to_expiring() {
-                self.token = Some(self.authenticate().await?);
+                let token = self.authenticate().await?;
+                token
+            } else {
+                token.clone()
             }
-            Ok(token.access_token())
         } else {
-            let token = self.authenticate().await?;
-            self.token = Some(token.clone());
-            Ok(token.access_token())
-        }
+            self.authenticate().await?
+        };
+        let access_token_string = token.access_token();
+        *guard = Some(token);
+        Ok(access_token_string)
     }
 
     async fn authenticate(&self) -> crate::Result<BearerToken> {

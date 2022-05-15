@@ -35,8 +35,8 @@ pub async fn run() -> Result<(), CliError> {
             subcmd,
         } => {
             let config = Config::new(client_id, client_secret, username, password);
-            let mut api = RestApi::new(config);
-            rest_api_sub_command(subcmd, &mut api).await?;
+            let api = RestApi::new(config);
+            rest_api_sub_command(subcmd, &api).await?;
         }
         SubCommand::DefaultIniPath => {
             ini::default_location().map(|p| stdout().write(p.as_os_str().as_bytes()));
@@ -46,10 +46,7 @@ pub async fn run() -> Result<(), CliError> {
     Ok(())
 }
 
-async fn rest_api_sub_command(
-    subcmd: RestApiSubCommand,
-    api: &mut RestApi,
-) -> Result<(), CliError> {
+async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> Result<(), CliError> {
     match subcmd {
         RestApiSubCommand::Folders => {
             let folders = api.get_folders::<FolderFull>().await?;
