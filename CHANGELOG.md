@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/jacobsvante/mediaflow/compare/v0.2.0...v0.3.0) (2022-05-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove need for declaring RestAPI as mutable
+
+### Features
+
+* Remove need for declaring RestAPI as mutable ([2a1948b](https://github.com/jacobsvante/mediaflow/commit/2a1948b875c0b2ab5e5dd6a968e5fbb1ce9a333c))
+
 ## [0.2.0](https://github.com/jacobsvante/mediaflow/compare/v0.1.1...v0.2.0) (2022-05-02)
 
 
