@@ -118,4 +118,4 @@ jobs:
       - if: ${{ steps.release.outputs.release_created }}
         run: cargo publish -p mediaflow_derive
       - if: ${{ steps.release.outputs.release_created }}
-        run: cargo publish
+        run: sleep 10 && cargo publish
