@@ -12,6 +12,8 @@ pub enum Error {
     JsonError(#[from] serde_json::Error),
     #[error("API error: {0}")]
     ApiError(u16, String),
+    #[error("{0}")]
+    UnexpectedApiResponseError(String),
 }
 
 #[derive(serde::Deserialize, Debug)]

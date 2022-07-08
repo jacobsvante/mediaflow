@@ -15,3 +15,5 @@ pub enum CliError {
     #[error("{0}")]
     LibraryError(#[from] crate::errors::Error),
 }
+
+pub type CliResult = std::result::Result<(), CliError>;

@@ -59,6 +59,18 @@ pub(crate) enum RestApiSubCommand {
         #[clap(short = 'r', long)]
         recursive: bool,
     },
+    Formats,
+    FileDownloads {
+        file_id: u32,
+    },
+    FileDownload {
+        file_id: u32,
+        format_id: i32,
+    },
+    FolderDownloads {
+        folder_id: u32,
+        format_id: i32,
+    },
     Raw {
         #[clap(subcommand)]
         subcmd: RawRestApiSubCommand,

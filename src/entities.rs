@@ -182,3 +182,29 @@ pub struct Geodata {
     pub longitude: f32,
     pub latitude: f32,
 }
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FormatFull {
+    /// (Using signed integer because of a "custom" format with id -1)
+    id: i32,
+    name: String,
+    width: u16,
+    height: u16,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FileDownloadFull {
+    /// `id` here is the Format id
+    /// (Using signed integer because of a "custom" format with id -1)
+    id: i32,
+    format: String,
+    watermark: bool,
+    is_preview: bool,
+    filetype: String,
+    expires_in: Option<u32>,
+    #[serde(rename = "downloadURL")]
+    download_url: String,
+    download_warning: bool,
+}

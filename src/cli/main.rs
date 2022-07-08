@@ -5,17 +5,21 @@ use std::{
 
 use clap::Parser;
 use log::{debug, LevelFilter};
+use serde::Serialize;
 
-use super::opts::{Opts, RestApiSubCommand, SubCommand};
-use super::{error::CliError, opts::RawRestApiSubCommand};
+use super::opts::RawRestApiSubCommand;
 use super::{helpers::safe_extract_arg, ini};
-use crate::config::Config;
+use super::{
+    opts::{Opts, RestApiSubCommand, SubCommand},
+    CliResult,
+};
 use crate::{
     api::RestApi,
     entities::{FileBase, FileFull, FolderFull},
 };
+use crate::{config::Config, FileDownloadFull, FormatFull, Result};
 
-pub async fn run() -> Result<(), CliError> {
+pub async fn run() -> CliResult {
     if let Some(level_filter) = safe_extract_arg::<LevelFilter>("level-filter") {
         env_logger::builder().filter(None, level_filter).init();
     }
@@ -46,29 +50,27 @@ pub async fn run() -> Result<(), CliError> {
     Ok(())
 }
 
-async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> Result<(), CliError> {
+async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> CliResult {
     match subcmd {
         RestApiSubCommand::Folders => {
-            let folders = api.get_folders::<FolderFull>().await?;
-            println!("{}", serde_json::to_string_pretty(&folders)?);
+            pretty_print_json(&api.get_folders::<FolderFull>().await?)?;
         }
         RestApiSubCommand::FolderChildren { folder_id } => {
-            let folders = api.get_folder_children::<FolderFull>(folder_id).await?;
-            println!("{}", serde_json::to_string_pretty(&folders)?);
+            pretty_print_json(&api.get_folder_children::<FolderFull>(folder_id).await?)?;
         }
         RestApiSubCommand::FolderFiles {
             folder_id,
             full,
             recursive,
         } => {
-            let output = if full {
+            if full {
                 let files = if recursive {
                     api.get_folder_files_recursive::<FileFull>(folder_id)
                         .await?
                 } else {
                     api.get_folder_files::<FileFull>(folder_id).await?
                 };
-                serde_json::to_string_pretty(&files)?
+                pretty_print_json(&files)?
             } else {
                 let files = if recursive {
                     api.get_folder_files_recursive::<FileBase>(folder_id)
@@ -76,9 +78,29 @@ async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> Resul
                 } else {
                     api.get_folder_files::<FileBase>(folder_id).await?
                 };
-                serde_json::to_string_pretty(&files)?
+                pretty_print_json(&files)?
             };
-            println!("{output}");
+        }
+        RestApiSubCommand::Formats => {
+            pretty_print_json(&api.get_formats::<FormatFull>().await?)?;
+        }
+        RestApiSubCommand::FileDownloads { file_id } => {
+            pretty_print_json(&api.get_file_downloads::<FileDownloadFull>(file_id).await?)?;
+        }
+        RestApiSubCommand::FileDownload { file_id, format_id } => {
+            pretty_print_json(
+                &api.get_file_download::<FileDownloadFull>(file_id, format_id)
+                    .await?,
+            )?;
+        }
+        RestApiSubCommand::FolderDownloads {
+            folder_id,
+            format_id,
+        } => {
+            pretty_print_json(
+                &api.get_folder_file_download_list::<FileDownloadFull>(folder_id, format_id)
+                    .await?,
+            )?;
         }
         RestApiSubCommand::Raw { subcmd } => match subcmd {
             RawRestApiSubCommand::Get { endpoint, query } => {
@@ -87,5 +109,10 @@ async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> Resul
             }
         },
     };
+    Ok(())
+}
+
+fn pretty_print_json<T: Serialize>(serializable: &T) -> Result<()> {
+    println!("{}", serde_json::to_string_pretty(&serializable)?);
     Ok(())
 }

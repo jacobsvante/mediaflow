@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use async_recursion::async_recursion;
+use futures::future::try_join_all;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
 use tokio::sync::Mutex;
@@ -8,7 +9,7 @@ use tokio::sync::Mutex;
 use crate::{
     config::Config,
     entities::{BearerToken, FolderId, TokenResponse},
-    MediaflowFile, MediaflowFolder,
+    FileId, MediaflowFile, MediaflowFolder,
 };
 
 #[derive(Debug, Clone)]
@@ -93,6 +94,71 @@ impl RestApi {
             Ok(resp_error) => Err(crate::Error::ApiError(status, resp_error.error())),
             Err(_) => Ok(body),
         }
+    }
+
+    /// List all download formats
+    pub async fn get_formats<T: DeserializeOwned>(&self) -> crate::Result<Vec<T>> {
+        let query = vec![Self::get_fields_query::<T>()];
+        let resp = self.get_raw("format", Some(query)).await?;
+        let files: Vec<T> = serde_json::from_str(&resp)?;
+        Ok(files)
+    }
+
+    /// Get download links for the given file ID
+    pub async fn get_file_downloads<T: DeserializeOwned>(
+        &self,
+        file_id: u32,
+    ) -> crate::Result<Vec<T>> {
+        let query = vec![Self::get_fields_query::<T>()];
+        let resp = self
+            .get_raw(format!("files/{file_id}/downloads"), Some(query))
+            .await?;
+        let downloads: Vec<T> = serde_json::from_str(&resp)?;
+        Ok(downloads)
+    }
+
+    /// Get original download link for the given file ID
+    /// NOTE: This is an undocumented API endpoint, use with caution!
+    /// (format ID 0 always "original" format)
+    pub async fn get_file_download<T: DeserializeOwned>(
+        &self,
+        file_id: u32,
+        format_id: i32,
+    ) -> crate::Result<T> {
+        let query = vec![Self::get_fields_query::<T>()];
+        let resp = self
+            .get_raw(
+                format!("files/{file_id}/downloads/{format_id}"),
+                Some(query),
+            )
+            .await?;
+        let mut downloads: Vec<T> = serde_json::from_str(&resp)?;
+        if downloads.len() == 1 {
+            Ok(downloads.pop().unwrap())
+        } else {
+            Err(crate::Error::UnexpectedApiResponseError(format!(
+                "Expected 1 result for /files/{file_id}/downloads/{format_id}, got {0} results",
+                downloads.len()
+            )))
+        }
+    }
+
+    pub async fn get_folder_file_download_list<T: DeserializeOwned + Send>(
+        &self,
+        folder_id: u32,
+        format_id: i32,
+    ) -> crate::Result<Vec<T>> {
+        let chunk_size = self.config.max_concurrent_downloads as usize;
+        let files = self.get_folder_files_recursive::<FileId>(folder_id).await?;
+        let mut downloads: Vec<T> = Vec::with_capacity(files.len());
+        for files_chunk in files.chunks(chunk_size) {
+            let mut futures = Vec::with_capacity(chunk_size);
+            for file in files_chunk {
+                futures.push(self.get_file_download::<T>(file.id, format_id));
+            }
+            downloads.extend(try_join_all(futures).await?);
+        }
+        Ok(downloads)
     }
 
     fn get_fields_query<T: DeserializeOwned>() -> (String, String) {
