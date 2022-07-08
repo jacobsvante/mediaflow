@@ -1,6 +1,6 @@
 [package]
 name = "mediaflow"
-version = "0.3.0"
+version = "0.4.0"
 license = "MIT"
 edition = "2021"
 description = "Unofficial SDK to interact with the Mediaflow Pro API"
@@ -16,7 +16,7 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 thiserror = "1.0"
 tokio = { version = "1.17", features = ["macros", "rt", "rt-multi-thread"] }
-mediaflow_derive = { version = "0.3.0", path = "./mediaflow_derive" }
+mediaflow_derive = { version = "0.4.0", path = "./mediaflow_derive" }
 serde-aux = { version = "3.0.1", default-features = false }
 log = "0.4.16"
 configparser = { version = "3.0.0", optional = true }
