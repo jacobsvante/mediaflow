@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/jacobsvante/mediaflow/compare/v0.4.1...v0.5.0) (2022-07-08)
+
+
+### Features
+
+* Add FileDownloadUrl type ([c57992c](https://github.com/jacobsvante/mediaflow/commit/c57992c24f127445c7d202fd99272a3a44fbc838))
+
+
+### Bug Fixes
+
+* Make FileDownloadFull fields public ([d7d1044](https://github.com/jacobsvante/mediaflow/commit/d7d10440fee0c5c7c8f1fa7ab7a259ccdd323420))
+
 ## [0.4.1](https://github.com/jacobsvante/mediaflow/compare/v0.4.0...v0.4.1) (2022-07-08)
 
 
