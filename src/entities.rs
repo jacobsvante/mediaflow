@@ -198,13 +198,13 @@ pub struct FormatFull {
 pub struct FileDownloadFull {
     /// `id` here is the Format id
     /// (Using signed integer because of a "custom" format with id -1)
-    id: i32,
-    format: String,
-    watermark: bool,
-    is_preview: bool,
-    filetype: String,
-    expires_in: Option<u32>,
+    pub id: i32,
+    pub format: String,
+    pub watermark: bool,
+    pub is_preview: bool,
+    pub filetype: String,
+    pub expires_in: Option<u32>,
     #[serde(rename = "downloadURL")]
-    download_url: String,
-    download_warning: bool,
+    pub download_url: String,
+    pub download_warning: bool,
 }
