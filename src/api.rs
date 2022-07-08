@@ -143,20 +143,24 @@ impl RestApi {
         }
     }
 
+    /// Get all downloads of the given format for all files within the given folder
     pub async fn get_folder_file_download_list<T: DeserializeOwned + Send>(
         &self,
         folder_id: u32,
         format_id: i32,
-    ) -> crate::Result<Vec<T>> {
+    ) -> crate::Result<Vec<(FileId, T)>> {
         let chunk_size = self.config.max_concurrent_downloads as usize;
         let files = self.get_folder_files_recursive::<FileId>(folder_id).await?;
-        let mut downloads: Vec<T> = Vec::with_capacity(files.len());
+        let mut downloads: Vec<(FileId, T)> = Vec::with_capacity(files.len());
         for files_chunk in files.chunks(chunk_size) {
+            let mut file_ids = Vec::with_capacity(chunk_size);
             let mut futures = Vec::with_capacity(chunk_size);
             for file in files_chunk {
+                file_ids.push(FileId { id: file.id });
                 futures.push(self.get_file_download::<T>(file.id, format_id));
             }
-            downloads.extend(try_join_all(futures).await?);
+            let dwnlds = try_join_all(futures).await?;
+            downloads.extend(file_ids.into_iter().zip(dwnlds));
         }
         Ok(downloads)
     }
