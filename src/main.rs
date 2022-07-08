@@ -3,7 +3,8 @@ use mediaflow::cli;
 
 #[cfg(not(feature = "cli"))]
 fn main() {
-    println!("No CLI, because `cli` feature is not installed")
+    eprintln!("No CLI, because `cli` feature is not installed");
+    std::process::exit(1);
 }
 
 #[cfg(feature = "cli")]
