@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/jacobsvante/mediaflow/compare/v0.5.0...v0.6.0) (2022-07-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Tie file id to each download
+
+### Features
+
+* Tie file id to each download ([4321ba8](https://github.com/jacobsvante/mediaflow/commit/4321ba83882c4426884339061861eb95475ad012))
+
 ## [0.5.0](https://github.com/jacobsvante/mediaflow/compare/v0.4.1...v0.5.0) (2022-07-08)
 
 
