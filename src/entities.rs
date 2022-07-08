@@ -208,3 +208,13 @@ pub struct FileDownloadFull {
     pub download_url: String,
     pub download_warning: bool,
 }
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FileDownloadUrl {
+    /// `id` here is the Format id
+    /// (Using signed integer because of a "custom" format with id -1)
+    pub id: i32,
+    #[serde(rename = "downloadURL")]
+    pub download_url: String,
+}
