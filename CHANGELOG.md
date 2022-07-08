@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/jacobsvante/mediaflow/compare/v0.4.0...v0.4.1) (2022-07-08)
+
+
+### Bug Fixes
+
+* Lower default max concurrent downloads ([9d65025](https://github.com/jacobsvante/mediaflow/commit/9d65025a5e2c564c1a4e76203f5a7633f29189ce))
+
 ## [0.4.0](https://github.com/jacobsvante/mediaflow/compare/v0.3.0...v0.4.0) (2022-07-08)
 
 
