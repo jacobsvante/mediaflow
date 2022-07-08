@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://github.com/jacobsvante/mediaflow/compare/v0.3.0...v0.4.0) (2022-07-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* env_logger, configparser and dirs are now only installed with `cli` feature
+
+### Features
+
+* Ability to download files ([1aa664b](https://github.com/jacobsvante/mediaflow/commit/1aa664b2c5224f3282216a4adf938f50b7ffc101))
+
+
+### Bug Fixes
+
+* env_logger, configparser and dirs are now only installed with `cli` feature ([9b6c9ec](https://github.com/jacobsvante/mediaflow/commit/9b6c9ec1fa026a94cb7487d167135f5e17618dc2))
+* Return error code 1 when CLI is not installed ([c8571d6](https://github.com/jacobsvante/mediaflow/commit/c8571d6f1086db983c09a9ea0044d35b1dc474d7))
+
 ## [0.3.0](https://github.com/jacobsvante/mediaflow/compare/v0.2.0...v0.3.0) (2022-05-15)
 
 
