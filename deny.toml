@@ -75,6 +75,7 @@ allow = [
     "ISC",
     "BSD-3-Clause",
     "OpenSSL",  # NOTE: For `ring`
+    "Unicode-DFS-2016",  # NOTE: For `unicode-ident`
 ]
 # List of explicitly disallowed licenses
 # See https://spdx.org/licenses/ for list of possible licenses
