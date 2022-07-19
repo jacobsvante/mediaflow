@@ -1,17 +1,12 @@
 [package]
-name = "mediaflow_derive"
+name = "mediaflow_core"
 version = "0.6.0"
 license = "MIT"
 edition = "2021"
-description = "Macros for the unofficial SDK to interact with the Mediaflow Pro API"
+description = "Core entities for the unofficial Mediaflow Pro API SDK"
 repository = "https://github.com/jacobsvante/mediaflow"
 documentation = "https://docs.rs/mediaflow/"
 homepage = "https://github.com/jacobsvante/mediaflow"
 
-[lib]
-proc-macro = true
-
 [dependencies]
-quote = "1.0.18"
-syn = "1.0"
-mediaflow_core = { version = "0.6.0", path = "../mediaflow_core" }
+serde = { version = "1", features = ["derive"] }

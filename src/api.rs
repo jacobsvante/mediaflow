@@ -8,9 +8,10 @@ use tokio::sync::Mutex;
 
 use crate::{
     config::Config,
-    entities::{BearerToken, FolderId, TokenResponse},
-    FileId, MediaflowFile, MediaflowFolder,
+    entities::{BearerToken, TokenResponse},
+    MediaflowFile, MediaflowFolder,
 };
+use mediaflow_core::{FileId, FolderId};
 
 #[derive(Debug, Clone)]
 pub struct RestApi {

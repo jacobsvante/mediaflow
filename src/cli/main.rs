@@ -13,11 +13,9 @@ use super::{
     opts::{Opts, RestApiSubCommand, SubCommand},
     CliResult,
 };
-use crate::{
-    api::RestApi,
-    entities::{FileBase, FileFull, FolderFull},
-};
-use crate::{config::Config, FileDownloadFull, FormatFull, Result};
+use crate::api::RestApi;
+use crate::{config::Config, Result};
+use mediaflow_core::{FileBase, FileDownloadFull, FileFull, FolderFull, FormatFull};
 
 pub async fn run() -> CliResult {
     if let Some(level_filter) = safe_extract_arg::<LevelFilter>("level-filter") {

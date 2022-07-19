@@ -6,9 +6,9 @@ use syn::{parse_macro_input, DeriveInput};
 pub fn derive_file_fn(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = input.ident;
-    // TODO: Check fields agains FileFull
+    // TODO: Check fields against FileFull
     TokenStream::from(quote!(
-        impl crate::MediaflowFile for #name {}
+        impl ::mediaflow_core::MediaflowFile for #name {}
     ))
 }
 
@@ -16,7 +16,18 @@ pub fn derive_file_fn(input: TokenStream) -> TokenStream {
 pub fn derive_folder_fn(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let name = input.ident;
+    // TODO: Check fields against FolderFull
     TokenStream::from(quote!(
-        impl crate::MediaflowFolder for #name {}
+        impl ::mediaflow_core::MediaflowFolder for #name {}
+    ))
+}
+
+#[proc_macro_derive(MediaflowFileDownload)]
+pub fn derive_download_fn(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+    // TODO: Check fields against FileDownloadFull
+    TokenStream::from(quote!(
+        impl ::mediaflow_core::MediaflowFileDownload for #name {}
     ))
 }

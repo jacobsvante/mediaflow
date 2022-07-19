@@ -10,9 +10,6 @@ pub mod cli;
 
 pub use api::*;
 pub use config::*;
-pub use entities::*;
 pub use errors::*;
+pub use mediaflow_core::*;
 pub use mediaflow_derive::*;
-
-pub trait MediaflowFile {}
-pub trait MediaflowFolder {}
