@@ -11,7 +11,7 @@ use crate::{
     tokens::{BearerToken, TokenResponse},
     MediaflowFile, MediaflowFolder,
 };
-use mediaflow_core::{FileId, FolderId};
+use mediaflow_core::{FileId, FolderId, MediaflowFileDownload};
 
 #[derive(Debug, Clone)]
 pub struct RestApi {
@@ -106,7 +106,7 @@ impl RestApi {
     }
 
     /// Get download links for the given file ID
-    pub async fn get_file_downloads<T: DeserializeOwned>(
+    pub async fn get_file_downloads<T: MediaflowFileDownload + DeserializeOwned>(
         &self,
         file_id: u32,
     ) -> crate::Result<Vec<T>> {
@@ -121,7 +121,7 @@ impl RestApi {
     /// Get original download link for the given file ID
     /// NOTE: This is an undocumented API endpoint, use with caution!
     /// (format ID 0 always "original" format)
-    pub async fn get_file_download<T: DeserializeOwned>(
+    pub async fn get_file_download<T: MediaflowFileDownload + DeserializeOwned>(
         &self,
         file_id: u32,
         format_id: i32,
@@ -145,7 +145,9 @@ impl RestApi {
     }
 
     /// Get all downloads of the given format for all files within the given folder
-    pub async fn get_folder_file_download_list<T: DeserializeOwned + Send>(
+    pub async fn get_folder_file_download_list<
+        T: MediaflowFileDownload + DeserializeOwned + Send,
+    >(
         &self,
         folder_id: u32,
         format_id: i32,
