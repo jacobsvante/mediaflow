@@ -1,6 +1,6 @@
 [package]
 name = "mediaflow"
-version = "0.6.2"
+version = "0.7.0"
 license = "MIT"
 edition = "2021"
 description = "Unofficial SDK to interact with the Mediaflow Pro API"
@@ -10,8 +10,8 @@ homepage = "https://github.com/jacobsvante/mediaflow"
 
 
 [dependencies]
-mediaflow_core = { version = "0.6.2", path = "./mediaflow_core" }
-mediaflow_derive = { version = "0.6.2", path = "./mediaflow_derive" }
+mediaflow_core = { version = "0.7.0", path = "./mediaflow_core" }
+mediaflow_derive = { version = "0.7.0", path = "./mediaflow_derive" }
 clap = { version = "3", optional = true, features = ["derive", "env"] }
 reqwest = { version = "0.11", default-features = false, features = ["rustls-tls", "json"] }
 serde = { version = "1", features = ["derive"] }
