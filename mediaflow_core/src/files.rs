@@ -112,13 +112,3 @@ pub struct Geodata {
     pub longitude: f32,
     pub latitude: f32,
 }
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct FormatFull {
-    /// (Using signed integer because of a "custom" format with id -1)
-    id: i32,
-    name: String,
-    width: u16,
-    height: u16,
-}

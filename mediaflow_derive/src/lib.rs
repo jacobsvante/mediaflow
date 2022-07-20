@@ -31,3 +31,13 @@ pub fn derive_download_fn(input: TokenStream) -> TokenStream {
         impl ::mediaflow::MediaflowFileDownload for #name {}
     ))
 }
+
+#[proc_macro_derive(MediaflowFormat)]
+pub fn derive_format_fn(input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(input as DeriveInput);
+    let name = input.ident;
+    // TODO: Check fields against FormatFull
+    TokenStream::from(quote!(
+        impl ::mediaflow::MediaflowFormat for #name {}
+    ))
+}

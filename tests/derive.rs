@@ -18,3 +18,10 @@ fn test_that_mediaflow_file_download_can_be_derived_outside_of_project() {
     #[derive(MediaflowFileDownload)]
     struct MyFileDownload {}
 }
+
+#[test]
+fn test_that_mediaflow_format_can_be_derived_outside_of_project() {
+    use mediaflow::MediaflowFormat;
+    #[derive(MediaflowFormat)]
+    struct MyFormat {}
+}

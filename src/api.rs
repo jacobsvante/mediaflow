@@ -9,9 +9,10 @@ use tokio::sync::Mutex;
 use crate::{
     config::Config,
     tokens::{BearerToken, TokenResponse},
-    MediaflowFile, MediaflowFolder,
 };
-use mediaflow_core::{FileId, FolderId, MediaflowFileDownload};
+use mediaflow_core::{
+    FileId, FolderId, MediaflowFile, MediaflowFileDownload, MediaflowFolder, MediaflowFormat,
+};
 
 #[derive(Debug, Clone)]
 pub struct RestApi {
@@ -98,7 +99,9 @@ impl RestApi {
     }
 
     /// List all download formats
-    pub async fn get_formats<T: DeserializeOwned>(&self) -> crate::Result<Vec<T>> {
+    pub async fn get_formats<T: MediaflowFormat + DeserializeOwned>(
+        &self,
+    ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
         let resp = self.get_raw("format", Some(query)).await?;
         let files: Vec<T> = serde_json::from_str(&resp)?;
