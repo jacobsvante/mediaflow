@@ -8,7 +8,7 @@ use tokio::sync::Mutex;
 
 use crate::{
     config::Config,
-    entities::{BearerToken, TokenResponse},
+    tokens::{BearerToken, TokenResponse},
     MediaflowFile, MediaflowFolder,
 };
 use mediaflow_core::{FileId, FolderId};
