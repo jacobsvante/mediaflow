@@ -1,6 +1,6 @@
 [package]
 name = "mediaflow_derive"
-version = "0.6.1"
+version = "0.6.2"
 license = "MIT"
 edition = "2021"
 description = "Macros for the unofficial SDK to interact with the Mediaflow Pro API"
@@ -14,4 +14,4 @@ proc-macro = true
 [dependencies]
 quote = "1.0.18"
 syn = "1.0"
-mediaflow_core = { version = "0.6.1", path = "../mediaflow_core" }
+mediaflow_core = { version = "0.6.2", path = "../mediaflow_core" }

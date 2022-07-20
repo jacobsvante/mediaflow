@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/jacobsvante/mediaflow/compare/v0.6.1...v0.6.2) (2022-07-20)
+
+
+### Bug Fixes
+
+* Actually make derive macros available outside of crate (try 2) ([22b676a](https://github.com/jacobsvante/mediaflow/commit/22b676ab7333f5feb5914888ba96370c0751c29a))
+
 ## [0.6.1](https://github.com/jacobsvante/mediaflow/compare/v0.6.0...v0.6.1) (2022-07-19)
 
 
