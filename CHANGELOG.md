@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/jacobsvante/mediaflow/compare/v0.6.2...v0.7.0) (2022-07-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* `get_formats` didn't require a specific mediaflow type
+* Require download type to derive trait MediaflowFileDownload
+
+### Bug Fixes
+
+* `get_formats` didn't require a specific mediaflow type ([43977fc](https://github.com/jacobsvante/mediaflow/commit/43977fc0269223652a668aca96b23c8c9d68e7a1))
+* Rename `entities` to `tokens` ([2c5ac5d](https://github.com/jacobsvante/mediaflow/commit/2c5ac5d6dd0cd1e552644170cb47eae6952715e4))
+* Require download type to derive trait MediaflowFileDownload ([2caecd3](https://github.com/jacobsvante/mediaflow/commit/2caecd386603f3fd514d7bf8c66ab0244a8c220a))
+
 ## [0.6.2](https://github.com/jacobsvante/mediaflow/compare/v0.6.1...v0.6.2) (2022-07-20)
 
 
