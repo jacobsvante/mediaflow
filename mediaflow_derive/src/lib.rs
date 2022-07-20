@@ -8,7 +8,7 @@ pub fn derive_file_fn(input: TokenStream) -> TokenStream {
     let name = input.ident;
     // TODO: Check fields against FileFull
     TokenStream::from(quote!(
-        impl ::mediaflow_core::MediaflowFile for #name {}
+        impl ::mediaflow::MediaflowFile for #name {}
     ))
 }
 
@@ -18,7 +18,7 @@ pub fn derive_folder_fn(input: TokenStream) -> TokenStream {
     let name = input.ident;
     // TODO: Check fields against FolderFull
     TokenStream::from(quote!(
-        impl ::mediaflow_core::MediaflowFolder for #name {}
+        impl ::mediaflow::MediaflowFolder for #name {}
     ))
 }
 
@@ -28,6 +28,6 @@ pub fn derive_download_fn(input: TokenStream) -> TokenStream {
     let name = input.ident;
     // TODO: Check fields against FileDownloadFull
     TokenStream::from(quote!(
-        impl ::mediaflow_core::MediaflowFileDownload for #name {}
+        impl ::mediaflow::MediaflowFileDownload for #name {}
     ))
 }
