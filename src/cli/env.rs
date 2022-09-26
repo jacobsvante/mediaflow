@@ -5,11 +5,15 @@ pub enum EnvVar {
     ClientSecret,
     Username,
     Password,
+    MaxConcurrentDownloads,
 }
 
 impl EnvVar {
     fn exists(key: &str) -> bool {
-        matches!(key, "CLIENT_ID" | "CLIENT_SECRET" | "USERNAME" | "PASSWORD")
+        matches!(
+            key,
+            "CLIENT_ID" | "CLIENT_SECRET" | "USERNAME" | "PASSWORD" | "MAX_CONCURRENT_DOWNLOADS"
+        )
     }
 
     pub(super) fn set<'a>(key: &'a str, val: &'a str) -> Result<&'a str, CliError> {
@@ -29,6 +33,7 @@ impl From<EnvVar> for &'static str {
             EnvVar::ClientSecret => "CLIENT_SECRET",
             EnvVar::Username => "USERNAME",
             EnvVar::Password => "PASSWORD",
+            EnvVar::MaxConcurrentDownloads => "MAX_CONCURRENT_DOWNLOADS",
         }
     }
 }

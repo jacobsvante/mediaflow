@@ -35,8 +35,15 @@ pub async fn run() -> CliResult {
             username,
             password,
             subcmd,
+            max_concurrent_downloads,
         } => {
-            let config = Config::new(client_id, client_secret, username, password);
+            let config = Config::new(
+                client_id,
+                client_secret,
+                username,
+                password,
+                Some(max_concurrent_downloads),
+            );
             let api = RestApi::new(config);
             rest_api_sub_command(subcmd, &api).await?;
         }

@@ -3,7 +3,7 @@ use super::opts::Opts;
 use super::CliError;
 use clap::IntoApp;
 use configparser::ini::Ini;
-use log::debug;
+use log::{debug, warn};
 use std::path::PathBuf;
 
 pub(crate) fn default_location() -> Option<PathBuf> {
@@ -55,7 +55,7 @@ pub(crate) fn to_env() -> Result<(), CliError> {
         let k = k.to_ascii_uppercase();
         if let Some(v) = v {
             if let Err(err) = EnvVar::set(&k, &v) {
-                debug!("{}", err);
+                warn!("{}", err);
             }
         }
     }

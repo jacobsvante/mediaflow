@@ -13,14 +13,21 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new<T: ToString>(client_id: T, client_secret: T, username: T, password: T) -> Self {
+    pub fn new<T: ToString>(
+        client_id: T,
+        client_secret: T,
+        username: T,
+        password: T,
+        max_concurrent_downloads: Option<u16>,
+    ) -> Self {
         Self {
             base_url: Url::parse(constants::DEFAULT_API_BASE_URL).unwrap(),
             client_id: client_id.to_string(),
             client_secret: client_secret.to_string(),
             username: username.to_string(),
             password: password.to_string(),
-            max_concurrent_downloads: constants::DEFAULT_MAX_CONCURRENT_DOWNLOADS,
+            max_concurrent_downloads: max_concurrent_downloads
+                .unwrap_or(constants::DEFAULT_MAX_CONCURRENT_DOWNLOADS),
         }
     }
 }

@@ -4,6 +4,7 @@ use clap::Parser;
 use log::LevelFilter;
 
 use super::env::EnvVar;
+use crate::constants;
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -39,6 +40,8 @@ pub(crate) enum SubCommand {
         username: String,
         #[clap(short = 'p', long, env = EnvVar::Password.into())]
         password: String,
+        #[clap(short = 'c', long, env = EnvVar::MaxConcurrentDownloads.into(), default_value_t = constants::DEFAULT_MAX_CONCURRENT_DOWNLOADS)]
+        max_concurrent_downloads: u16,
         #[clap(subcommand)]
         subcmd: RestApiSubCommand,
     },
