@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.8.0](https://github.com/jacobsvante/mediaflow/compare/v0.7.0...v0.8.0) (2022-09-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Getting file downloads for a folder didn't allow non-recursive mode
+
+### Features
+
+* Retry 429/500 errors for file download requests ([fa69547](https://github.com/jacobsvante/mediaflow/commit/fa69547966a6eb21c27c98fba186174c29139364))
+
+
+### Bug Fixes
+
+* Getting file downloads for a folder didn't allow non-recursive mode ([93d25e8](https://github.com/jacobsvante/mediaflow/commit/93d25e815b963e49c137bba8710fa9d5f761418a))
+* MAX_CONCURRENT_DOWNLOADS env var didn't apply ([299cf39](https://github.com/jacobsvante/mediaflow/commit/299cf3901dd08e4db87a9e9850942cb79736f683))
+
 ## [0.7.0](https://github.com/jacobsvante/mediaflow/compare/v0.6.2...v0.7.0) (2022-07-20)
 
 
