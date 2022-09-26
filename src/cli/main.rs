@@ -101,10 +101,13 @@ async fn rest_api_sub_command(subcmd: RestApiSubCommand, api: &RestApi) -> CliRe
         RestApiSubCommand::FolderDownloads {
             folder_id,
             format_id,
+            recursive,
         } => {
             pretty_print_json(
-                &api.get_folder_file_download_list::<FileDownloadFull>(folder_id, format_id)
-                    .await?,
+                &api.get_folder_file_download_list::<FileDownloadFull>(
+                    folder_id, format_id, recursive,
+                )
+                .await?,
             )?;
         }
         RestApiSubCommand::Raw { subcmd } => match subcmd {

@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use http::StatusCode;
+
 pub type Result<T> = std::result::Result<T, Error>;
 
 #[derive(thiserror::Error, Debug)]
@@ -11,14 +13,15 @@ pub enum Error {
     #[error("JSON serialization/deserialization error")]
     JsonError(#[from] serde_json::Error),
     #[error("API error: {0}")]
-    ApiError(u16, String),
+    ApiError(StatusCode, String),
     #[error("{0}")]
     UnexpectedApiResponseError(String),
 }
 
 #[derive(serde::Deserialize, Debug)]
 pub struct MediaFlowResponseError {
-    status: u16,
+    #[serde(with = "http_serde::status_code")]
+    status: StatusCode,
     error: String,
 }
 

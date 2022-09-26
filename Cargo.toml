@@ -26,6 +26,8 @@ env_logger = { version = "0.9", optional = true }
 async-recursion = "1"
 url = { version = "2", features = ["serde"] }
 futures = "0.3"
+http = "0.2.8"
+http-serde = "1.1.2"
 
 [features]
 cli = ["clap", "env_logger", "configparser", "dirs"]

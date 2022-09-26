@@ -1,7 +1,8 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use async_recursion::async_recursion;
 use futures::future::try_join_all;
+use http::StatusCode;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
 use tokio::sync::Mutex;
@@ -90,12 +91,63 @@ impl RestApi {
             .query(&query.unwrap_or_default())
             .send()
             .await?;
-        let status = resp.status().as_u16();
+        let status = resp.status();
         let body = resp.text().await?;
         match serde_json::from_str::<crate::MediaFlowResponseError>(&body) {
             Ok(resp_error) => Err(crate::Error::ApiError(status, resp_error.error())),
             Err(_) => Ok(body),
         }
+    }
+
+    /// GET request, with back-off retries on some known errors
+    /// Retries are done for the following errors:
+    ///   - 429 Too Many Requests
+    ///   - 500 Internal Server error (with body "Unspecified database error")
+    pub(crate) async fn get_raw_with_retry<T: ToString + Clone>(
+        &self,
+        endpoint: T,
+        query: Option<Vec<(String, String)>>,
+    ) -> crate::Result<String> {
+        let mut res = Err(crate::Error::ApiError(
+            StatusCode::TOO_MANY_REQUESTS,
+            "Too Many Requests".into(),
+        ));
+        for retry_number in 0..100 {
+            if retry_number > 0 {
+                let wait = 1_000 + retry_number * 100;
+                log::warn!(
+                    "Retry #{retry_number}, waiting {wait} milliseconds before next request..."
+                );
+                tokio::time::sleep(Duration::from_millis(wait)).await;
+            }
+            match self.get_raw(endpoint.clone(), query.clone()).await {
+                Ok(body) => {
+                    res = Ok(body);
+                    break;
+                }
+                Err(crate::Error::ApiError(status @ StatusCode::TOO_MANY_REQUESTS, message)) => {
+                    res = Err(crate::Error::ApiError(status, message));
+                    continue;
+                }
+                Err(crate::Error::ApiError(
+                    status @ StatusCode::INTERNAL_SERVER_ERROR,
+                    message,
+                )) => {
+                    let is_retry_body = &message == "Unspecified database error";
+                    res = Err(crate::Error::ApiError(status, message));
+                    if is_retry_body {
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+                Err(err) => {
+                    res = Err(err);
+                    break;
+                }
+            }
+        }
+        res
     }
 
     /// List all download formats
@@ -115,7 +167,7 @@ impl RestApi {
     ) -> crate::Result<Vec<T>> {
         let query = vec![Self::get_fields_query::<T>()];
         let resp = self
-            .get_raw(format!("files/{file_id}/downloads"), Some(query))
+            .get_raw_with_retry(format!("files/{file_id}/downloads"), Some(query))
             .await?;
         let downloads: Vec<T> = serde_json::from_str(&resp)?;
         Ok(downloads)
@@ -131,7 +183,7 @@ impl RestApi {
     ) -> crate::Result<T> {
         let query = vec![Self::get_fields_query::<T>()];
         let resp = self
-            .get_raw(
+            .get_raw_with_retry(
                 format!("files/{file_id}/downloads/{format_id}"),
                 Some(query),
             )
@@ -154,6 +206,7 @@ impl RestApi {
         &self,
         folder_id: u32,
         format_id: i32,
+        recursive: bool,
     ) -> crate::Result<Vec<(FileId, T)>> {
         let chunk_size = self.config.max_concurrent_downloads as usize;
         let files = if recursive {
@@ -187,8 +240,7 @@ impl RestApi {
         let mut guard = self.token.lock().await;
         let token = if let Some(token) = &*guard {
             if token.close_to_expiring() {
-                let token = self.authenticate().await?;
-                token
+                self.authenticate().await?
             } else {
                 token.clone()
             }
