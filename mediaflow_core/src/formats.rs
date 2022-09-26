@@ -19,8 +19,9 @@ pub struct FormatFull {
     /// (Using signed integer because of a "custom" format with id -1)
     id: i32,
     name: String,
-    width: u16,
-    height: u16,
+    /// (Using signed integers because "keep original width/height" is specified as -1 for both fields)
+    width: i16,
+    height: i16,
 }
 
 impl MediaflowFormat for FormatFull {}
