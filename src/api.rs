@@ -156,7 +156,14 @@ impl RestApi {
         format_id: i32,
     ) -> crate::Result<Vec<(FileId, T)>> {
         let chunk_size = self.config.max_concurrent_downloads as usize;
-        let files = self.get_folder_files_recursive::<FileId>(folder_id).await?;
+        let files = if recursive {
+            log::info!("Recursively getting file downloads for folder {folder_id}...");
+            self.get_folder_files_recursive::<FileId>(folder_id).await?
+        } else {
+            log::info!("Getting file downloads for folder {folder_id}...");
+            self.get_folder_files::<FileId>(folder_id).await?
+        };
+        log::info!("Max concurrent downloads: {chunk_size}");
         let mut downloads: Vec<(FileId, T)> = Vec::with_capacity(files.len());
         for files_chunk in files.chunks(chunk_size) {
             let mut file_ids = Vec::with_capacity(chunk_size);
