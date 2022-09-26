@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 pub trait MediaflowFormat {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FormatFull {
     /// (Using signed integer because of a "custom" format with id -1)

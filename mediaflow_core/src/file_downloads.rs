@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 pub trait MediaflowFileDownload {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileDownloadFull {
     /// `id` here is the Format id
@@ -30,7 +30,7 @@ pub struct FileDownloadFull {
 }
 impl MediaflowFileDownload for FileDownloadFull {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileDownloadUrl {
     /// `id` here is the Format id

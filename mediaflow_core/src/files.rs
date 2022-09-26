@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 pub trait MediaflowFile {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileBase {
     pub id: u32,
@@ -23,7 +23,7 @@ pub struct FileBase {
 }
 impl MediaflowFile for FileBase {}
 
-#[derive(Default, Debug, Copy, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileId {
     pub id: u32,
@@ -81,7 +81,7 @@ pub struct FileFull {
 }
 impl MediaflowFile for FileFull {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileType {
     pub id: u32,
@@ -98,7 +98,7 @@ pub struct Focus {
     pub y: f32,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Preview {
     pub name: String,

@@ -13,7 +13,7 @@ use serde::{Deserialize, Serialize};
 ///     }
 pub trait MediaflowFolder {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FolderFull {
     pub id: u32,
@@ -34,14 +34,14 @@ pub struct FolderFull {
 }
 impl MediaflowFolder for FolderFull {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FolderId {
     pub id: u32,
 }
 impl MediaflowFolder for FolderId {}
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ParentFolder {
     pub id: u32,
