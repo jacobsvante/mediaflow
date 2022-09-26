@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.9.0](https://github.com/jacobsvante/mediaflow/compare/v0.8.0...v0.9.0) (2022-09-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Original width/height format wasn't supported
+
+### Bug Fixes
+
+* Original width/height format wasn't supported ([ea2fca9](https://github.com/jacobsvante/mediaflow/commit/ea2fca989e31ad782f82633f2ed989e467c8bd23))
+
 ## [0.8.0](https://github.com/jacobsvante/mediaflow/compare/v0.7.0...v0.8.0) (2022-09-26)
 
 
