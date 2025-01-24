@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.10.0](https://github.com/jacobsvante/mediaflow/compare/v0.9.0...v0.10.0) (2025-01-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Increase u16 fields to u32
+
+### Bug Fixes
+
+* Increase u16 fields to u32 ([90080cb](https://github.com/jacobsvante/mediaflow/commit/90080cb90786aaed6c1cae9e430dc8a2d0c9cdff))
+* Upgrade dependencies ([fcc97f3](https://github.com/jacobsvante/mediaflow/commit/fcc97f33554730714bd87a73559da455af749f55))
+
 ## [0.9.0](https://github.com/jacobsvante/mediaflow/compare/v0.8.0...v0.9.0) (2022-09-26)
 
 
