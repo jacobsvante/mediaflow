@@ -65,10 +65,10 @@ impl RestApi {
     }
 
     #[async_recursion]
-    pub async fn get_folder_files_recursive<T: MediaflowFile + DeserializeOwned + Send>(
-        &self,
-        folder_id: u32,
-    ) -> crate::Result<Vec<T>> {
+    pub async fn get_folder_files_recursive<T>(&self, folder_id: u32) -> crate::Result<Vec<T>>
+    where
+        T: MediaflowFile + DeserializeOwned + Send,
+    {
         let mut files: Vec<T> = self.get_folder_files(folder_id).await?;
         let subfolders: Vec<FolderId> = self.get_folder_children(folder_id).await?;
         for subfolder in subfolders {

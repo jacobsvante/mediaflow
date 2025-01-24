@@ -20,7 +20,7 @@ pub struct FolderFull {
     pub name: String,
     #[serde(rename = "type")]
     pub type_: u32,
-    pub depth: u16,
+    pub depth: u32,
     pub parent: Option<u32>,
     pub created: String,
     pub created_by: u32,
@@ -48,7 +48,7 @@ pub struct ParentFolder {
     pub name: String,
     #[serde(rename = "type")]
     pub type_: u32,
-    pub depth: u16,
+    pub depth: u32,
     pub parent: Option<u32>,
     pub has_children: bool,
 }
